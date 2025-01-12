@@ -1,6 +1,7 @@
 package com.bookrecommend.demo.request;
 
 import com.bookrecommend.demo.domain.Book;
+import com.bookrecommend.demo.domain.Member;
 import com.bookrecommend.demo.domain.Review;
 import com.bookrecommend.demo.service.BookService;
 import lombok.Builder;
@@ -13,16 +14,16 @@ public class ReviewRequest {
 
     private String reviewId;
     private Long bookId;
-    private String memberId;
+    private Long memberId;
     private String contents;
     private String fileUrl;
     private int rating;
 
-    public Review toEntity(String reviewId, Book book, String memberId, String contents, String fileUrl, int rating) {
+    public Review toEntity(String reviewId, Book book, Member member, String contents, String fileUrl, int rating) {
         return Review.builder()
                 .reviewId(reviewId)
                 .book(book)
-                .memberId(memberId)
+                .member(member)
                 .contents(contents)
                 .fileUrl(fileUrl)
                 .rating(rating)
