@@ -4,13 +4,8 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
-
-import java.sql.Clob;
-import java.sql.Date;
 
 @Entity
 @Getter
@@ -28,15 +23,16 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "book_id")
     private Book book;
 
-    @Column(length = 15, nullable = false)
-    private String memberId;
+    @ManyToOne
+    @JoinColumn(name = "member_id")
+    private Member member;
 
     @Lob
     @Column(nullable = false)
     private String contents;
 
     @Column(length = 2, columnDefinition = "VARCHAR(2) DEFAULT 'N'", name = "delete_flag")
-    private String deleteFlag;
+    private String deleteFlag = "N";
 
     @Column(columnDefinition = "INT DEFAULT 0", name = "heart_cnt")
     private int heartCnt;
@@ -48,13 +44,18 @@ public class Review extends BaseEntity {
     private int rating;
 
     @Builder
-    public Review(String reviewId, Book book, String memberId, String contents, String fileUrl, int rating) {
+    public Review(String reviewId, Book book, Member member, String contents, String fileUrl, int rating) {
         this.reviewId = reviewId;
         this.book = book;
-        this.memberId = memberId;
+        this.member = member;
+        this.contents = contents;
+        this.fileUrl = fileUrl;
+        this.rating = rating;
+    }
+
+    public void update(String contents, String fileUrl, int rating) {
         this.contents = contents;
         this.fileUrl = fileUrl;
         this.rating = rating;
     }
 }
-
